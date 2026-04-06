@@ -135,9 +135,41 @@
         // 渲染 Markdown
         contentEl.innerHTML = marked.parse(markdown);
 
+        // 处理可折叠卡片中的 HTML
+        processCollapsibleCards();
+
         // 滚动到顶部
         contentEl.scrollTop = 0;
     }
+
+    // ===== 可折叠卡片处理 =====
+    function processCollapsibleCards() {
+        // 找到所有可折叠卡片（通过 class 标记）
+        const cards = contentEl.querySelectorAll('.collapsible-card');
+
+        cards.forEach(card => {
+            const header = card.querySelector('.collapsible-header');
+            if (header) {
+                // 绑定点击事件
+                header.addEventListener('click', function() {
+                    card.classList.toggle('open');
+                });
+
+                // 默认展开第一个卡片
+                if (card === cards[0]) {
+                    card.classList.add('open');
+                }
+            }
+        });
+    }
+
+    // 全局函数供 onclick 使用
+    window.toggleCollapsible = function(header) {
+        const card = header.closest('.collapsible-card');
+        if (card) {
+            card.classList.toggle('open');
+        }
+    };
 
     function escapeHtml(text) {
         const div = document.createElement('div');

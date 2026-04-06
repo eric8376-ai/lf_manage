@@ -207,6 +207,113 @@ html, body {
     font-weight: 500;
 }
 
+/* ===== 可折叠卡片 ===== */
+.collapsible-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px var(--shadow);
+    overflow: hidden;
+}
+
+.collapsible-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+}
+
+.collapsible-header:hover {
+    background: rgba(76, 175, 80, 0.05);
+}
+
+.collapsible-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.collapsible-arrow {
+    font-size: 14px;
+    color: var(--text-light);
+    transition: transform 0.3s ease;
+}
+
+.collapsible-card.open .collapsible-arrow {
+    transform: rotate(180deg);
+}
+
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.collapsible-card.open .collapsible-content {
+    max-height: 1000px;
+}
+
+.collapsible-body {
+    padding: 0 20px 16px;
+}
+
+/* 链接列表样式 */
+.link-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.link-list li {
+    margin-bottom: 8px;
+}
+
+.link-list a {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--background);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+}
+
+.link-list a:hover {
+    background: var(--primary-light);
+    color: white;
+    transform: translateX(4px);
+}
+
+.link-list a:active {
+    transform: scale(0.98);
+}
+
+.link-icon {
+    margin-right: 12px;
+    font-size: 20px;
+}
+
+.link-text {
+    flex: 1;
+    font-weight: 500;
+}
+
+.link-arrow {
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+.link-list a:hover .link-arrow {
+    color: white;
+}
+
 /* ===== 加载动画 ===== */
 .loading {
     text-align: center;

@@ -4,6 +4,29 @@
 
 ---
 
+## 🔗 快捷链接
+
+<div class="collapsible-card">
+<div class="collapsible-header" onclick="toggleCollapsible(this)">
+<h3>📚 训练资源</h3>
+<span class="collapsible-arrow">▼</span>
+</div>
+<div class="collapsible-content">
+<div class="collapsible-body">
+<ul class="link-list">
+<li><a href="fitness/chest.html"><span class="link-icon">💪</span><span class="link-text">胸部训练详解</span><span class="link-arrow">›</span></a></li>
+<li><a href="fitness/back.html"><span class="link-icon">🔙</span><span class="link-text">背部训练详解</span><span class="link-arrow">›</span></a></li>
+<li><a href="fitness/legs.html"><span class="link-icon">🦵</span><span class="link-text">腿部训练详解</span><span class="link-arrow">›</span></a></li>
+<li><a href="fitness/shoulder.html"><span class="link-icon">🤷</span><span class="link-text">肩部训练详解</span><span class="link-arrow">›</span></a></li>
+<li><a href="fitness/core.html"><span class="link-icon">🎯</span><span class="link-text">核心训练详解</span><span class="link-arrow">›</span></a></li>
+<li><a href="fitness/stretch.html"><span class="link-icon">🧘</span><span class="link-text">拉伸放松指南</span><span class="link-arrow">›</span></a></li>
+</ul>
+</div>
+</div>
+</div>
+
+---
+
 ## 训练原则
 
 1. **循序渐进** - 逐步增加强度，避免受伤
