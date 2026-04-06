@@ -14,6 +14,8 @@
             health: [
                 { icon: '📋', text: '健康原则', anchor: '健康生活原则' },
                 { icon: '✅', text: '日常清单', anchor: '日常健康清单' },
+                { icon: '🧬', text: '激素原理', anchor: '激素原理' },
+                { icon: '📊', text: '管理策略', anchor: '管理策略' },
             ],
             fitness: [
                 { icon: '💪', text: '胸部训练', subpage: 'chest' },
