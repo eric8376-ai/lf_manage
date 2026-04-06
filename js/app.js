@@ -1,6 +1,5 @@
 /**
  * 生活管理 H5 应用
- * 路由 + Markdown 渲染 + 侧边栏
  */
 
 (function() {
@@ -17,12 +16,12 @@
                 { icon: '✅', text: '日常清单', anchor: '日常健康清单' },
             ],
             fitness: [
-                { icon: '💪', text: '胸部训练', url: 'content/fitness/chest.html' },
-                { icon: '🔙', text: '背部训练', url: 'content/fitness/back.html' },
-                { icon: '🦵', text: '腿部训练', url: 'content/fitness/legs.html' },
-                { icon: '🤷', text: '肩部训练', url: 'content/fitness/shoulder.html' },
-                { icon: '🎯', text: '核心训练', url: 'content/fitness/core.html' },
-                { icon: '🧘', text: '拉伸放松', url: 'content/fitness/stretch.html' },
+                { icon: '💪', text: '胸部训练', subpage: 'chest' },
+                { icon: '🔙', text: '背部训练', subpage: 'back' },
+                { icon: '🦵', text: '腿部训练', subpage: 'legs' },
+                { icon: '🤷', text: '肩部训练', subpage: 'shoulder' },
+                { icon: '🎯', text: '核心训练', subpage: 'core' },
+                { icon: '🧘', text: '拉伸放松', subpage: 'stretch' },
             ],
             mind: [
                 { icon: '🧘', text: '冥想练习', anchor: '冥想练习' },
@@ -37,18 +36,17 @@
 
     // ===== 状态 =====
     let currentPage = CONFIG.defaultPage;
-    let contentEl, navItems, sidebar, sidebarOverlay, sidebarToggle, sidebarClose, sidebarContent;
+    let contentEl, navItems, sidebar, sidebarOverlay, sidebarToggle, sidebarCloseEl, sidebarContent;
 
     // ===== 工具函数 =====
     function getUrlParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
+        return new URLSearchParams(window.location.search).get(param);
     }
 
     function setUrlParam(param, value) {
         const url = new URL(window.location.href);
         url.searchParams.set(param, value);
-        window.history.pushState({}, '', url.toString());
+        history.pushState({}, '', url);
     }
 
     // ===== 初始化 =====
@@ -58,7 +56,7 @@
         sidebar = document.getElementById('sidebar');
         sidebarOverlay = document.getElementById('sidebarOverlay');
         sidebarToggle = document.getElementById('sidebarToggle');
-        sidebarClose = document.getElementById('sidebarClose');
+        sidebarCloseEl = document.getElementById('sidebarClose');
         sidebarContent = document.getElementById('sidebarContent');
 
         // 配置 marked
@@ -67,20 +65,20 @@
         }
 
         // 侧边栏事件
-        if (sidebarToggle) sidebarToggle.addEventListener('click', openSidebar);
-        if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
-        if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+        if (sidebarToggle) sidebarToggle.onclick = openSidebar;
+        if (sidebarCloseEl) sidebarCloseEl.onclick = closeSidebar;
+        if (sidebarOverlay) sidebarOverlay.onclick = closeSidebar;
 
         // 导航点击
         navItems.forEach(item => {
-            item.addEventListener('click', (e) => {
+            item.onclick = (e) => {
                 e.preventDefault();
                 navigateTo(item.dataset.page);
-            });
+            };
         });
 
         // 浏览器前进后退
-        window.addEventListener('popstate', handlePopState);
+        window.onpopstate = handlePopState;
 
         // 初始加载
         handlePopState();
@@ -88,66 +86,74 @@
 
     // ===== 侧边栏 =====
     function openSidebar() {
-        if (sidebar && sidebarOverlay) {
-            sidebar.classList.add('open');
-            sidebarOverlay.classList.add('show');
-            updateSidebarContent();
-        }
+        sidebar.classList.add('open');
+        sidebarOverlay.classList.add('show');
+        updateSidebarLinks();
     }
 
     function closeSidebar() {
-        if (sidebar && sidebarOverlay) {
-            sidebar.classList.remove('open');
-            sidebarOverlay.classList.remove('show');
-        }
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('show');
     }
 
-    function updateSidebarContent() {
-        if (!sidebarContent) return;
-
+    function updateSidebarLinks() {
         const links = CONFIG.sidebarLinks[currentPage] || [];
-        const pageNames = { health: '健康', fitness: '健身', mind: '心灵', plan: '计划' };
+        const names = { health: '健康', fitness: '健身', mind: '心灵', plan: '计划' };
 
-        if (links.length === 0) {
-            sidebarContent.innerHTML = `<div class="sidebar-section">
-                <div class="sidebar-section-title">${pageNames[currentPage] || '当前模块'}</div>
-                <p style="padding: 16px; color: var(--text-light); text-align: center;">暂无快捷链接</p>
-            </div>`;
+        if (!links.length) {
+            sidebarContent.innerHTML = `<p style="padding:20px;color:#666;text-align:center;">暂无快捷链接</p>`;
             return;
         }
 
-        let html = `<div class="sidebar-section">
-            <div class="sidebar-section-title">${pageNames[currentPage] || '快捷链接'}</div>`;
-
+        let html = `<div class="sidebar-section-title">${names[currentPage] || '快捷链接'}</div>`;
         links.forEach(link => {
-            if (link.url) {
-                html += `<a href="${link.url}" class="sidebar-link">
+            if (link.subpage) {
+                html += `<a class="sidebar-link" onclick="loadSubPage('${link.subpage}')">
                     <span class="sidebar-link-icon">${link.icon}</span>
                     <span class="sidebar-link-text">${link.text}</span>
                     <span class="sidebar-link-arrow">›</span>
                 </a>`;
             } else if (link.anchor) {
-                html += `<a href="javascript:void(0)" class="sidebar-link" onclick="scrollToAnchor('${link.anchor}')">
+                html += `<a class="sidebar-link" onclick="goToAnchor('${link.anchor}')">
                     <span class="sidebar-link-icon">${link.icon}</span>
                     <span class="sidebar-link-text">${link.text}</span>
                     <span class="sidebar-link-arrow">›</span>
                 </a>`;
             }
         });
-
-        html += '</div>';
         sidebarContent.innerHTML = html;
     }
 
-    // 全局滚动函数
-    window.scrollToAnchor = function(anchorText) {
+    // 全局函数：加载子页面
+    window.loadSubPage = async function(name) {
         closeSidebar();
-        const headings = contentEl.querySelectorAll('h1, h2, h3');
-        for (const h of headings) {
-            if (h.textContent.includes(anchorText)) {
-                h.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                h.style.background = 'rgba(76, 175, 80, 0.2)';
-                setTimeout(() => { h.style.background = ''; }, 2000);
+        contentEl.innerHTML = '<div class="loading">加载中...</div>';
+
+        try {
+            const res = await fetch(`${CONFIG.contentPath}fitness/${name}.md`);
+            if (!res.ok) throw new Error(res.status);
+            const md = await res.text();
+
+            // 添加返回按钮
+            const backBtn = `<a class="back-link" onclick="goBack()">← 返回健身模块</a>`;
+            contentEl.innerHTML = backBtn + (typeof marked !== 'undefined' ? marked.parse(md) : `<pre>${md}</pre>`);
+        } catch (e) {
+            contentEl.innerHTML = `<div class="error"><h2>内容未找到</h2><p>无法加载 fitness/${name}.md</p></div>`;
+        }
+    };
+
+    window.goBack = function() {
+        navigateTo('fitness');
+    };
+
+    window.goToAnchor = function(text) {
+        closeSidebar();
+        const hs = contentEl.querySelectorAll('h1,h2,h3');
+        for (const h of hs) {
+            if (h.textContent.includes(text)) {
+                h.scrollIntoView({ behavior: 'smooth' });
+                h.style.background = 'rgba(76,175,80,0.2)';
+                setTimeout(() => h.style.background = '', 2000);
                 break;
             }
         }
@@ -156,10 +162,9 @@
     // ===== 路由 =====
     function handlePopState() {
         const page = getUrlParam('page') || CONFIG.defaultPage;
-        const validPage = CONFIG.pages.includes(page) ? page : CONFIG.defaultPage;
-        currentPage = validPage;
-        updateNavHighlight(validPage);
-        loadContent(validPage);
+        currentPage = CONFIG.pages.includes(page) ? page : CONFIG.defaultPage;
+        updateNavHighlight(currentPage);
+        loadPage(currentPage);
     }
 
     function navigateTo(page) {
@@ -167,7 +172,7 @@
         currentPage = page;
         updateNavHighlight(page);
         setUrlParam('page', page);
-        loadContent(page);
+        loadPage(page);
     }
 
     function updateNavHighlight(page) {
@@ -177,32 +182,20 @@
     }
 
     // ===== 内容加载 =====
-    async function loadContent(page) {
+    async function loadPage(page) {
         contentEl.innerHTML = '<div class="loading">加载中...</div>';
         contentEl.dataset.loaded = '';
 
         try {
-            const response = await fetch(`${CONFIG.contentPath}${page}.md`);
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const markdown = await response.text();
-            renderContent(markdown);
+            const res = await fetch(`${CONFIG.contentPath}${page}.md`);
+            if (!res.ok) throw new Error(res.status);
+            const md = await res.text();
+            contentEl.innerHTML = typeof marked !== 'undefined' ? marked.parse(md) : `<pre>${md}</pre>`;
             contentEl.dataset.loaded = page;
-        } catch (error) {
-            contentEl.innerHTML = `<div class="error">
-                <h2>📄 内容未找到</h2>
-                <p>无法加载 <code>${page}.md</code></p>
-                <p>${error.message}</p>
-            </div>`;
+            contentEl.scrollTop = 0;
+        } catch (e) {
+            contentEl.innerHTML = `<div class="error"><h2>📄 内容未找到</h2><p>无法加载 ${page}.md</p></div>`;
         }
-    }
-
-    function renderContent(markdown) {
-        if (typeof marked === 'undefined') {
-            contentEl.innerHTML = `<pre>${markdown}</pre>`;
-            return;
-        }
-        contentEl.innerHTML = marked.parse(markdown);
-        contentEl.scrollTop = 0;
     }
 
     // ===== 启动 =====
