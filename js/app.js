@@ -1,6 +1,6 @@
 /**
  * 生活管理 H5 应用
- * 路由 + Markdown 渲染
+ * 路由 + Markdown 渲染 + 侧边栏
  */
 
 (function() {
@@ -10,26 +10,68 @@
     const CONFIG = {
         contentPath: 'content/',
         defaultPage: 'health',
-        pages: ['health', 'fitness', 'mind', 'plan', 'about']
+        pages: ['health', 'fitness', 'mind', 'plan', 'about'],
+        // 侧边栏链接配置
+        sidebarLinks: {
+            health: [
+                { icon: '📋', text: '健康原则', anchor: '健康生活原则' },
+                { icon: '✅', text: '日常清单', anchor: '日常健康清单' },
+            ],
+            fitness: [
+                { icon: '💪', text: '胸部训练', url: 'content/fitness/chest.html' },
+                { icon: '🔙', text: '背部训练', url: 'content/fitness/back.html' },
+                { icon: '🦵', text: '腿部训练', url: 'content/fitness/legs.html' },
+                { icon: '🤷', text: '肩部训练', url: 'content/fitness/shoulder.html' },
+                { icon: '🎯', text: '核心训练', url: 'content/fitness/core.html' },
+                { icon: '🧘', text: '拉伸放松', url: 'content/fitness/stretch.html' },
+            ],
+            mind: [
+                { icon: '🧘', text: '冥想练习', anchor: '冥想练习' },
+                { icon: '💭', text: '情绪管理', anchor: '情绪管理' },
+            ],
+            plan: [
+                { icon: '🎯', text: '年度目标', anchor: '年度目标' },
+                { icon: '📅', text: '周计划', anchor: '周计划模板' },
+            ]
+        }
     };
 
     // ===== 当前状态 =====
     let currentPage = CONFIG.defaultPage;
 
     // ===== DOM 元素 =====
-    const contentEl = document.getElementById('content');
-    const navItems = document.querySelectorAll('.nav-item');
+    let contentEl, navItems, sidebar, sidebarOverlay, sidebarToggle, sidebarClose, sidebarContent;
 
     // ===== 初始化 =====
     function init() {
+        // 获取 DOM 元素
+        contentEl = document.getElementById('content');
+        navItems = document.querySelectorAll('.nav-item');
+        sidebar = document.getElementById('sidebar');
+        sidebarOverlay = document.getElementById('sidebarOverlay');
+        sidebarToggle = document.getElementById('sidebarToggle');
+        sidebarClose = document.getElementById('sidebarClose');
+        sidebarContent = document.getElementById('sidebarContent');
+
         // 配置 marked 选项
         if (typeof marked !== 'undefined') {
             marked.setOptions({
-                breaks: true,        // 支持 GitHub 风格换行
-                gfm: true,           // GitHub 风格 Markdown
-                headerIds: false,    // 不生成 header id
-                mangle: false        // 不混淆邮箱
+                breaks: true,
+                gfm: true,
+                headerIds: true,
+                mangle: false
             });
+        }
+
+        // 侧边栏事件
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', openSidebar);
+        }
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', closeSidebar);
+        }
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', closeSidebar);
         }
 
         // 监听 hash 变化
@@ -48,6 +90,90 @@
         handleHashChange();
     }
 
+    // ===== 侧边栏控制 =====
+    function openSidebar() {
+        if (sidebar && sidebarOverlay) {
+            sidebar.classList.add('open');
+            sidebarOverlay.classList.add('show');
+            updateSidebarContent();
+        }
+    }
+
+    function closeSidebar() {
+        if (sidebar && sidebarOverlay) {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('show');
+        }
+    }
+
+    function updateSidebarContent() {
+        if (!sidebarContent) return;
+
+        const links = CONFIG.sidebarLinks[currentPage] || [];
+        const pageNames = {
+            health: '健康',
+            fitness: '健身',
+            mind: '心灵',
+            plan: '计划'
+        };
+
+        if (links.length === 0) {
+            sidebarContent.innerHTML = `
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">${pageNames[currentPage] || '当前模块'}</div>
+                    <p style="padding: 16px; color: var(--text-light); text-align: center;">
+                        暂无快捷链接
+                    </p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = `
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">${pageNames[currentPage] || '快捷链接'}</div>
+        `;
+
+        links.forEach(link => {
+            if (link.url) {
+                html += `
+                    <a href="${link.url}" class="sidebar-link">
+                        <span class="sidebar-link-icon">${link.icon}</span>
+                        <span class="sidebar-link-text">${link.text}</span>
+                        <span class="sidebar-link-arrow">›</span>
+                    </a>
+                `;
+            } else if (link.anchor) {
+                html += `
+                    <a href="javascript:void(0)" class="sidebar-link" onclick="scrollToAnchor('${link.anchor}')">
+                        <span class="sidebar-link-icon">${link.icon}</span>
+                        <span class="sidebar-link-text">${link.text}</span>
+                        <span class="sidebar-link-arrow">›</span>
+                    </a>
+                `;
+            }
+        });
+
+        html += '</div>';
+        sidebarContent.innerHTML = html;
+    }
+
+    // 全局滚动函数
+    window.scrollToAnchor = function(anchorText) {
+        closeSidebar();
+        // 查找包含该文本的标题
+        const headings = contentEl.querySelectorAll('h1, h2, h3');
+        for (const h of headings) {
+            if (h.textContent.includes(anchorText)) {
+                h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // 高亮效果
+                h.style.background = 'rgba(76, 175, 80, 0.2)';
+                setTimeout(() => { h.style.background = ''; }, 2000);
+                break;
+            }
+        }
+    };
+
     // ===== 路由处理 =====
     function handleHashChange() {
         const hash = window.location.hash.slice(1) || CONFIG.defaultPage;
@@ -57,18 +183,12 @@
 
     function navigateTo(page) {
         if (currentPage === page && contentEl.dataset.loaded === page) {
-            return; // 已加载，跳过
+            return;
         }
 
         currentPage = page;
-
-        // 更新导航高亮
         updateNavHighlight(page);
-
-        // 更新 URL
         history.pushState(null, '', `#${page}`);
-
-        // 加载内容
         loadContent(page);
     }
 
@@ -132,44 +252,9 @@
             return;
         }
 
-        // 渲染 Markdown
         contentEl.innerHTML = marked.parse(markdown);
-
-        // 处理可折叠卡片中的 HTML
-        processCollapsibleCards();
-
-        // 滚动到顶部
         contentEl.scrollTop = 0;
     }
-
-    // ===== 可折叠卡片处理 =====
-    function processCollapsibleCards() {
-        // 找到所有可折叠卡片（通过 class 标记）
-        const cards = contentEl.querySelectorAll('.collapsible-card');
-
-        cards.forEach(card => {
-            const header = card.querySelector('.collapsible-header');
-            if (header) {
-                // 绑定点击事件
-                header.addEventListener('click', function() {
-                    card.classList.toggle('open');
-                });
-
-                // 默认展开第一个卡片
-                if (card === cards[0]) {
-                    card.classList.add('open');
-                }
-            }
-        });
-    }
-
-    // 全局函数供 onclick 使用
-    window.toggleCollapsible = function(header) {
-        const card = header.closest('.collapsible-card');
-        if (card) {
-            card.classList.toggle('open');
-        }
-    };
 
     function escapeHtml(text) {
         const div = document.createElement('div');

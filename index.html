@@ -2,14 +2,30 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌿 生活管理</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- 侧边栏遮罩 -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- 侧边栏 -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>📚 快捷资源</h2>
+            <button class="sidebar-close" id="sidebarClose">×</button>
+        </div>
+        <div class="sidebar-content" id="sidebarContent">
+            <!-- 动态加载内容 -->
+        </div>
+    </aside>
+
     <!-- 顶部标题栏 -->
     <header class="header">
+        <button class="sidebar-toggle" id="sidebarToggle">☰</button>
         <h1>🌿 生活管理</h1>
+        <div style="width: 40px;"></div>
     </header>
 
     <!-- 主内容区 -->
