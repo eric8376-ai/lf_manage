@@ -2,28 +2,52 @@
 
 > 坚持锻炼，塑造更好的自己。
 
+详细动作见：[[chest|胸部训练]]、[[back|背部训练]]、[[legs|腿部训练]]、[[shoulder|肩部训练]]、[[core|核心训练]]、[[stretch|拉伸放松]]
+
 ---
 
-## 🔗 快捷链接
+## 运动类型对比
 
-<div class="collapsible-card">
-<div class="collapsible-header" onclick="toggleCollapsible(this)">
-<h3>📚 训练资源</h3>
-<span class="collapsible-arrow">▼</span>
-</div>
-<div class="collapsible-content">
-<div class="collapsible-body">
-<ul class="link-list">
-<li><a href="fitness/chest.html"><span class="link-icon">💪</span><span class="link-text">胸部训练详解</span><span class="link-arrow">›</span></a></li>
-<li><a href="fitness/back.html"><span class="link-icon">🔙</span><span class="link-text">背部训练详解</span><span class="link-arrow">›</span></a></li>
-<li><a href="fitness/legs.html"><span class="link-icon">🦵</span><span class="link-text">腿部训练详解</span><span class="link-arrow">›</span></a></li>
-<li><a href="fitness/shoulder.html"><span class="link-icon">🤷</span><span class="link-text">肩部训练详解</span><span class="link-arrow">›</span></a></li>
-<li><a href="fitness/core.html"><span class="link-icon">🎯</span><span class="link-text">核心训练详解</span><span class="link-arrow">›</span></a></li>
-<li><a href="fitness/stretch.html"><span class="link-icon">🧘</span><span class="link-text">拉伸放松指南</span><span class="link-arrow">›</span></a></li>
-</ul>
-</div>
-</div>
-</div>
+> 选择适合自己的运动方式，才能事半功倍。
+
+### 三种运动对比
+
+| 对比维度 | 高强度间歇 (HIIT) | 持续有氧 (LISS) | 力量运动 |
+|---------|------------------|----------------|---------|
+| 核心特点 | 短时、爆发、冲刺 | 长时、稳定、匀速 | 对抗、破坏、重建 |
+| 对皮质醇影响 | 短期内飙升，恢复后基线下降 | 持续中等水平，结束后平稳下降 | 中等偏高，尤其在力竭组 |
+| 燃脂效率 | 极高（有后燃效应 EPOC） | 中等（运动中直接燃脂） | 低（运动中主要消耗糖原） |
+| 提升基础代谢 | 中等 | 低 | 极高（增加肌肉量） |
+| 改善胰岛素敏感性 | 最佳 | 很好 | 很好 |
+| 缓解焦虑效果 | 释放内啡肽，但可能增加急性压力 | 最稳定、最有效的焦虑缓解方式 | 增强掌控感，长期效果佳 |
+| 受伤风险 | 较高（关节、肌肉） | 低 | 中等（姿势不当） |
+| 耗时 | 短（10-20分钟） | 长（30-60分钟） | 中（30-45分钟） |
+
+### 1. 高强度间歇运动 (HIIT) —— 效率之王
+
+**对皮质醇**：运动时急剧升高，但运动后会降得比运动前还低。注意：如果压力本身就很大，再做 HIIT 可能雪上加霜。
+
+**对代谢**：最强的后燃效应（EPOC），运动后几小时内身体仍在高耗能状态。改善胰岛素敏感性效果最快。
+
+**适用场景**：时间紧、想快速燃脂、身体状态好时。**不建议在重大考试/面试前 24 小时内做**。
+
+### 2. 持续有氧运动 (LISS) —— 皮质醇清道夫
+
+**对皮质醇**：最友好。中等强度（能说话不能唱歌）下，皮质醇平稳升高，结束后平稳下降。对缓解慢性压力和焦虑效果最好。
+
+**对代谢**：运动中直接消耗脂肪，但没有后燃效应。对提升基础代谢帮助最小。
+
+**适用场景**：压力大时、睡前 3-4 小时、希望稳定燃脂、需要放松大脑时。
+
+### 3. 力量运动 —— 代谢提升的长期投资
+
+**对皮质醇**：大重量、力竭组会使皮质醇显著升高。但小重量、多次数的循环训练，影响介于 HIIT 和持续有氧之间。
+
+**对代谢**：最大价值在于增加肌肉量。**每增加 1 公斤肌肉，每天基础代谢多消耗约 30 千卡**。这是长期、可持续的代谢提升。
+
+**对情绪**：增强"我能行"的掌控感，对缓解因无力感产生的焦虑很有效。
+
+**适用场景**：想长期提高代谢、塑形、增强骨密度。
 
 ---
 
