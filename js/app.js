@@ -8,7 +8,7 @@
     const CONFIG = {
         contentPath: 'content/',
         defaultPage: 'health',
-        pages: ['health', 'fitness', 'mind', 'plan', 'about']
+        pages: ['plan', 'health', 'fitness', 'mind', 'hobby']
     };
 
     let currentPage = CONFIG.defaultPage;

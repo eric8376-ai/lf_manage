@@ -73,7 +73,9 @@ html, body {
     }
 
     .navbar {
-        left: 280px;
+        left: 280px !important;
+        right: 0 !important;
+        width: auto !important;
     }
 }
 
