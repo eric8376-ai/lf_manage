@@ -136,8 +136,9 @@
             tabs.forEach((tab, i) => {
                 const isActive = tab.isDefault || (!hasDefault && i === 0);
                 const activeClass = isActive ? ' active' : '';
-                // 递归解析 TAB 内容中的 Markdown
-                const contentHtml = marked.parse(tab.content);
+                // 先递归处理嵌套TAB，再交给marked解析
+                const processedContent = parseTabs(tab.content);
+                const contentHtml = marked.parse(processedContent);
                 html += `<div class="tabbed-panel${activeClass}" data-tab="${i}">${contentHtml}</div>\n`;
             });
 
