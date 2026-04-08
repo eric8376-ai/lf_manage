@@ -279,6 +279,26 @@
         return html;
     }
 
+    function wrapTables() {
+        contentEl.querySelectorAll('table').forEach(table => {
+            if (table.parentElement.classList.contains('table-scroll')) return;
+            var wrapper = document.createElement('div');
+            wrapper.className = 'table-scroll';
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        });
+    }
+
+    function renderContent(html) {
+        contentEl.innerHTML = html;
+        wrapTables();
+    }
+
+    function renderContentWithBreadcrumb(breadcrumb, html) {
+        contentEl.innerHTML = breadcrumb + html;
+        wrapTables();
+    }
+
     // 加载子页面
     window.loadSubPage = async function(name) {
         closeSidebar();
@@ -316,17 +336,16 @@
                 return `[${displayText}](javascript:loadSubPage('${fileName}'))`;
             });
 
-            const breadcrumb = buildBreadcrumb();
-            contentEl.innerHTML = breadcrumb + (typeof marked !== 'undefined' ? marked.parse(md) : `<pre>${md}</pre>`);
+            renderContentWithBreadcrumb(breadcrumb, typeof marked !== 'undefined' ? marked.parse(md) : `<pre>${md}</pre>`);
             contentEl.scrollTop = 0;
 
         } catch (e) {
             const breadcrumb = buildBreadcrumb();
-            contentEl.innerHTML = breadcrumb + `<div class="error">
+            renderContentWithBreadcrumb(breadcrumb, `<div class="error">
                 <h2>📄 内容未找到</h2>
                 <p>无法加载 ${filePath}</p>
                 <p style="color:#999;font-size:12px;">${e.message}</p>
-            </div>`;
+            </div>`);
         }
     };
 
@@ -368,12 +387,11 @@
                 return `[${displayText}](javascript:loadSubPage('${fileName}'))`;
             });
 
-            const breadcrumb = buildBreadcrumb();
-            contentEl.innerHTML = breadcrumb + (typeof marked !== 'undefined' ? marked.parse(md) : `<pre>${md}</pre>`);
+            renderContentWithBreadcrumb(breadcrumb, typeof marked !== 'undefined' ? marked.parse(md) : `<pre>${md}</pre>`);
             contentEl.scrollTop = 0;
 
         } catch (e) {
-            contentEl.innerHTML = `<div class="error"><h2>加载失败</h2><a onclick="goHome()">← 返回首页</a></div>`;
+            renderContent(`<div class="error"><h2>加载失败</h2><a onclick="goHome()">← 返回首页</a></div>`);
         }
     };
 
@@ -439,7 +457,7 @@
                 return `[${displayText}](javascript:loadSubPage('${fileName}'))`;
             });
 
-            contentEl.innerHTML = typeof marked !== 'undefined' ? marked.parse(md) : `<pre>${md}</pre>`;
+            renderContent(typeof marked !== 'undefined' ? marked.parse(md) : `<pre>${md}</pre>`);
             contentEl.dataset.loaded = page;
             contentEl.scrollTop = 0;
 

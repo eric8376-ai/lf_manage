@@ -378,14 +378,20 @@ html, body {
 }
 
 /* ===== 表格样式（重点修复）===== */
+.table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 16px 0;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
 .content table {
     width: 100%;
     border-collapse: collapse;
-    margin: 16px 0;
+    margin: 0;
     background: #ffffff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
+    min-width: 600px;
 }
 
 .content th {
