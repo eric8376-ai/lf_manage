@@ -241,19 +241,6 @@
         sidebarContent.innerHTML = html || '<p style="padding:20px;color:#666;text-align:center;">暂无内容</p>';
     }
 
-        if (currentHeadings.length > 0) {
-            currentHeadings.forEach(link => {
-                html += `<a class="sidebar-link" onclick="goToAnchor('${link.anchor.replace(/'/g, "\\'")}')">
-                    <span class="sidebar-link-icon">📑</span>
-                    <span class="sidebar-link-text">${link.text}</span>
-                    <span class="sidebar-link-arrow">›</span>
-                </a>`;
-            });
-        }
-
-        sidebarContent.innerHTML = html || '<p style="padding:20px;color:#666;text-align:center;">暂无内容</p>';
-    }
-
     // 构建面包屑 HTML
     function buildBreadcrumb() {
         if (navigationStack.length === 0) return '';
@@ -339,12 +326,11 @@
                 return `[${displayText}](javascript:loadSubPage('${fileName}'))`;
             });
 
-            renderContentWithBreadcrumb(breadcrumb, typeof marked !== 'undefined' ? marked.parse(md) : `<pre>${md}</pre>`);
+            renderContentWithBreadcrumb(buildBreadcrumb(), typeof marked !== 'undefined' ? marked.parse(md) : `<pre>${md}</pre>`);
             contentEl.scrollTop = 0;
 
         } catch (e) {
-            const breadcrumb = buildBreadcrumb();
-            renderContentWithBreadcrumb(breadcrumb, `<div class="error">
+            renderContentWithBreadcrumb(buildBreadcrumb(), `<div class="error">
                 <h2>📄 内容未找到</h2>
                 <p>无法加载 ${filePath}</p>
                 <p style="color:#999;font-size:12px;">${e.message}</p>
@@ -390,7 +376,7 @@
                 return `[${displayText}](javascript:loadSubPage('${fileName}'))`;
             });
 
-            renderContentWithBreadcrumb(breadcrumb, typeof marked !== 'undefined' ? marked.parse(md) : `<pre>${md}</pre>`);
+            renderContentWithBreadcrumb(buildBreadcrumb(), typeof marked !== 'undefined' ? marked.parse(md) : `<pre>${md}</pre>`);
             contentEl.scrollTop = 0;
 
         } catch (e) {
