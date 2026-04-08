@@ -228,15 +228,18 @@
 
         let html = `<div class="sidebar-section-title">${names[currentPage] || '页面导航'}</div>`;
 
-        if (currentWikiLinks.length > 0) {
-            currentWikiLinks.forEach(link => {
-                html += `<a class="sidebar-link" onclick="loadSubPage('${link.file}')">
-                    <span class="sidebar-link-icon">📄</span>
+        if (currentHeadings.length > 0) {
+            currentHeadings.forEach(link => {
+                html += `<a class="sidebar-link" onclick="goToAnchor('${link.anchor.replace(/'/g, "\\'")}')">
+                    <span class="sidebar-link-icon">📑</span>
                     <span class="sidebar-link-text">${link.text}</span>
                     <span class="sidebar-link-arrow">›</span>
                 </a>`;
             });
         }
+
+        sidebarContent.innerHTML = html || '<p style="padding:20px;color:#666;text-align:center;">暂无内容</p>';
+    }
 
         if (currentHeadings.length > 0) {
             currentHeadings.forEach(link => {
